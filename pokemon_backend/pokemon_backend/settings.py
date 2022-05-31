@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-1-si#^@e13*e_ecok)zzbkz8^5(+4zez_5oedy+$2l8uu9&oa$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -75,8 +75,12 @@ WSGI_APPLICATION = 'pokemon_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'pikachu',
+        'USER': 'postgres',
+        'PASSWORD': '9485326',
+        'HOST': 'localhost',
+        'PORT': 5433,
     }
 }
 
