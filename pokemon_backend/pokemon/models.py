@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 class Move(models.Model):
     id = models.BigAutoField(primary_key=True)
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=250, unique=True)
 
     class Meta:
         db_table = "moves"
@@ -22,7 +22,7 @@ class Ability(models.Model):
 
 class Type(models.Model):
     id = models.BigAutoField(primary_key=True)
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=250, unique=True)
 
     class Meta:
         db_table = "types"
@@ -30,8 +30,8 @@ class Type(models.Model):
 
 class Area(models.Model):
     id = models.BigAutoField(primary_key=True)
-    id_location = models.ForeignKey("Location", models.DO_NOTHING, )
-    name = models.CharField(max_length=250)
+    location = models.ForeignKey("Location", models.DO_NOTHING, )
+    name = models.CharField(max_length=250, unique=True)
     pokemon_number = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
@@ -40,7 +40,7 @@ class Area(models.Model):
 
 class Location(models.Model):
     id = models.BigAutoField(primary_key=True)
-    id_regions = models.ForeignKey("Region", models.DO_NOTHING)
+    regions = models.ForeignKey("Region", models.DO_NOTHING)
     name = models.CharField(max_length=200)
 
     class Meta:
@@ -49,7 +49,7 @@ class Location(models.Model):
 
 class Region(models.Model):
     id = models.BigAutoField(primary_key=True)
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=250, unique=True)
 
     class Meta:
         db_table = "regions"
@@ -57,7 +57,7 @@ class Region(models.Model):
 
 class Sprite(models.Model):
     id = models.BigAutoField(primary_key=True)
-    front_default = models.CharField(max_length=300,)
+    front_default = models.CharField(max_length=300, null=True)
     back_default = models.CharField(max_length=300, null=True)
     back_shiny = models.CharField(max_length=300, null=True)
     back_shiny_female = models.CharField(max_length=300, null=True)
@@ -73,12 +73,13 @@ class Sprite(models.Model):
 
 class Pokemon(models.Model):
     id = models.BigAutoField(primary_key=True)
-    id_sprites = models.ForeignKey("Sprite", models.DO_NOTHING)
+    sprite = models.ForeignKey("Sprite", models.DO_NOTHING)
     name = models.CharField(max_length=150)
     flavor_text = models.CharField(max_length=400)
     capture_rate = models.FloatField()
     weight = models.FloatField()
     height = models.FloatField()
+    color = models.CharField(max_length=100)
 
     class Meta:
         db_table = "pokemons"
@@ -86,8 +87,8 @@ class Pokemon(models.Model):
 
 class Storage(models.Model):
     id = models.BigAutoField(primary_key=True)
-    user_id = models.ForeignKey(User, models.DO_NOTHING)
-    id_pokemons = models.ForeignKey("Pokemon", models.DO_NOTHING)
+    user = models.ForeignKey(User, models.DO_NOTHING)
+    pokemon = models.ForeignKey("Pokemon", models.DO_NOTHING)
     nick_name = models.CharField(max_length=200)
     party_member = models.BooleanField()
 
@@ -97,8 +98,8 @@ class Storage(models.Model):
 
 class PokemonArea(models.Model):
     id = models.BigAutoField(primary_key=True)
-    area_id = models.ForeignKey(Area, models.DO_NOTHING)
-    pokemon_id = models.ForeignKey(Pokemon, models.DO_NOTHING)
+    area = models.ForeignKey(Area, models.DO_NOTHING)
+    pokemon = models.ForeignKey(Pokemon, models.DO_NOTHING)
 
     class Meta:
         db_table = "pokemons_areas"
@@ -106,8 +107,8 @@ class PokemonArea(models.Model):
 
 class PokemonMove(models.Model):
     id = models.BigAutoField(primary_key=True)
-    pokemon_id = models.ForeignKey(Pokemon, models.DO_NOTHING)
-    move_id = models.ForeignKey(Move, models.DO_NOTHING)
+    pokemon = models.ForeignKey(Pokemon, models.DO_NOTHING)
+    move = models.ForeignKey(Move, models.DO_NOTHING)
 
     class Meta:
         db_table = "pokemons_moves"
@@ -115,8 +116,8 @@ class PokemonMove(models.Model):
 
 class PokemonType(models.Model):
     id = models.BigAutoField(primary_key=True)
-    pokemon_id = models.ForeignKey(Pokemon, models.DO_NOTHING)
-    type_id = models.ForeignKey(Type, models.DO_NOTHING)
+    pokemon = models.ForeignKey(Pokemon, models.DO_NOTHING)
+    type = models.ForeignKey(Type, models.DO_NOTHING)
 
     class Meta:
         db_table = "pokemons_types"
@@ -124,8 +125,8 @@ class PokemonType(models.Model):
 
 class PokemonAbility(models.Model):
     id = models.BigAutoField(primary_key=True)
-    pokemon_id = models.ForeignKey(Pokemon, models.DO_NOTHING)
-    ability_id = models.ForeignKey(Ability, models.DO_NOTHING)
+    pokemon = models.ForeignKey(Pokemon, models.DO_NOTHING)
+    ability = models.ForeignKey(Ability, models.DO_NOTHING)
 
     class Meta:
         db_table = "pokemons_abilities"
@@ -135,7 +136,7 @@ class Stat(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=250)
     value = models.BigIntegerField()
-    pokemon_id = models.ForeignKey(Pokemon, models.DO_NOTHING)
+    pokemon = models.ForeignKey(Pokemon, models.DO_NOTHING)
 
     class Meta:
         db_table = "stats"
