@@ -4,18 +4,6 @@ from pokemon.models import Ability, Area, Location, Move, Pokemon, PokemonArea, 
 from pokemon.serializer import AbilitySerializer, AreaSerializer, LocationSerializer, MoveSerializer, PokemonAbilitySerializer, PokemonAreaSerializer, PokemonMoveSerializer, PokemonSerializer, PokemonTypeSerializer, RegionSerializer, SpriteSerializer, StatSerializer, TypeSerializer
 
 
-def populate():
-    regions_data()
-    locations_data()
-    areas_data()
-    moves_data()
-    types_data()
-    abilities_data()
-    pokemons_sprites_stats_data()
-    pokemon_areas()
-    pokemon_moves_types_abilities()
-
-
 def regions_data():
     file = open("pokemon/utils/jsons/regions.json")
     data = json.load(file)
@@ -160,12 +148,12 @@ def pokemon_moves_types_abilities():
     dict_list_types = []
     dict_list_abilities = []
     for pokemon in data["data"]:
-       
+
         pokemon_db = Pokemon.objects.get(name=pokemon["name"])
-   
         moves = Move.objects.filter(name__in=pokemon["moves"])
         abilities = Ability.objects.filter(name__in=pokemon["abilities"])
         types = Type.objects.filter(name__in=pokemon["types"])
+
         for elem in moves:
             dict_list_moves.append({"move": elem.id, "pokemon": pokemon_db.id})
         for elem in abilities:
@@ -173,6 +161,7 @@ def pokemon_moves_types_abilities():
                 {"ability": elem.id, "pokemon": pokemon_db.id})
         for elem in types:
             dict_list_types.append({"type": elem.id, "pokemon": pokemon_db.id})
+
     pokemon_moves_serializer = PokemonMoveSerializer(
         many=True, data=dict_list_moves)
     pokemon_abilities_serializer = PokemonAbilitySerializer(
