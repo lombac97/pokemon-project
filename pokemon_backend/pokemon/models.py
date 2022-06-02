@@ -66,7 +66,7 @@ class Storage(models.Model):
     specie = models.ForeignKey("Pokemon", models.DO_NOTHING)
     nick_name = models.CharField(max_length=200)
     is_party_member = models.BooleanField()
-
+    
     class Meta:
         db_table = "storages"
 

@@ -26,3 +26,8 @@ class StatsListingField(serializers.RelatedField):
 class PokemonAreasListingField(serializers.RelatedField):
     def to_representation(self, value):
         return PokemonFromAreaOutputSerializer(instance=value.pokemon).data
+
+
+class PokemonStoragesListingField(serializers.RelatedField):
+    def to_representation(self, value):
+        return PokemonFromAreaOutputSerializer(instance=value).data

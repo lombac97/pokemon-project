@@ -55,7 +55,6 @@ class LocationDetails(APIView):
 
 
 class AreaDetails(APIView):
-
     class OutputSerializer(serializers.ModelSerializer):
        # locations = LocationsListingField(many=True, read_only=True)
       #  areas = AreasListingField(many=True, read_only=True)

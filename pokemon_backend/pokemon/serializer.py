@@ -131,3 +131,9 @@ class PokemonMoveSerializer(serializers.ModelSerializer):
         model = PokemonMove
         list_serializer_class = PokemonMoveCreateListSerializer
         fields = "__all__"
+
+
+class StorageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Storage
+        fields = "__all__"
