@@ -29,9 +29,10 @@ class Type(models.Model):
 
 class Area(models.Model):
     id = models.BigAutoField(primary_key=True)
-    location = models.ForeignKey("Location", models.DO_NOTHING, )
+    location = models.ForeignKey(
+        "Location", models.DO_NOTHING, related_name="areas")
     name = models.CharField(max_length=250, unique=True)
-    pokemon_number = models.BigIntegerField(blank=True, null=True)
+    pokemon_count = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
         db_table = "areas"
@@ -39,7 +40,8 @@ class Area(models.Model):
 
 class Location(models.Model):
     id = models.BigAutoField(primary_key=True)
-    regions = models.ForeignKey("Region", models.DO_NOTHING)
+    regions = models.ForeignKey(
+        "Region", models.DO_NOTHING, related_name="locations")
     name = models.CharField(max_length=200)
 
     class Meta:
@@ -81,6 +83,7 @@ class Pokemon(models.Model):
     color = models.CharField(max_length=100)
 
     class Meta:
+        managed = True
         db_table = "pokemons"
 
 
@@ -97,8 +100,9 @@ class Storage(models.Model):
 
 class PokemonArea(models.Model):
     id = models.BigAutoField(primary_key=True)
-    area = models.ForeignKey(Area, models.DO_NOTHING)
-    pokemon = models.ForeignKey(Pokemon, models.DO_NOTHING)
+    area = models.ForeignKey(Area, models.DO_NOTHING, related_name="pokemons")
+    pokemon = models.ForeignKey(
+        Pokemon, models.DO_NOTHING)
 
     class Meta:
         db_table = "pokemons_areas"
@@ -106,7 +110,8 @@ class PokemonArea(models.Model):
 
 class PokemonMove(models.Model):
     id = models.BigAutoField(primary_key=True)
-    pokemon = models.ForeignKey(Pokemon, models.DO_NOTHING)
+    pokemon = models.ForeignKey(
+        Pokemon, models.DO_NOTHING, related_name="moves")
     move = models.ForeignKey(Move, models.DO_NOTHING)
 
     class Meta:
@@ -115,7 +120,8 @@ class PokemonMove(models.Model):
 
 class PokemonType(models.Model):
     id = models.BigAutoField(primary_key=True)
-    pokemon = models.ForeignKey(Pokemon, models.DO_NOTHING)
+    pokemon = models.ForeignKey(
+        Pokemon, models.DO_NOTHING, related_name='types')
     type = models.ForeignKey(Type, models.DO_NOTHING)
 
     class Meta:
@@ -124,7 +130,8 @@ class PokemonType(models.Model):
 
 class PokemonAbility(models.Model):
     id = models.BigAutoField(primary_key=True)
-    pokemon = models.ForeignKey(Pokemon, models.DO_NOTHING)
+    pokemon = models.ForeignKey(
+        Pokemon, models.DO_NOTHING, related_name='abilities')
     ability = models.ForeignKey(Ability, models.DO_NOTHING)
 
     class Meta:
@@ -135,7 +142,8 @@ class Stat(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=250)
     value = models.BigIntegerField()
-    pokemon = models.ForeignKey(Pokemon, models.DO_NOTHING)
+    pokemon = models.ForeignKey(
+        Pokemon, models.DO_NOTHING, related_name="stats")
 
     class Meta:
         db_table = "stats"

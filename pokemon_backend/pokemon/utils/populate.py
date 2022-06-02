@@ -43,7 +43,7 @@ def areas_data():
         location_id = Location.objects.get(name=area["location"])
 
         dict_list.append(
-            {"name": area["name"], "location": location_id.id, "pokemon_number": len(area["pokemons"])})
+            {"name": area["name"], "location": location_id.id, "pokemon_count": len(area["pokemons"])})
     area_serializer = AreaSerializer(many=True, data=dict_list)
     area_serializer.is_valid(raise_exception=True)
     area_serializer.save()
