@@ -1,7 +1,9 @@
 import json
 
-from pokemon.models import Ability, Area, Location, Move, Pokemon, PokemonArea, Region, Type
-from pokemon.serializer import AbilitySerializer, AreaSerializer, LocationSerializer, MoveSerializer, PokemonAbilitySerializer, PokemonAreaSerializer, PokemonMoveSerializer, PokemonSerializer, PokemonTypeSerializer, RegionSerializer, SpriteSerializer, StatSerializer, TypeSerializer
+from pokemon.models import Ability, Move, Pokemon, Type
+from places.models import Region, Location, Area
+from pokemon.serializer import AbilitySerializer, MoveSerializer, PokemonAbilitySerializer, PokemonAreaSerializer, PokemonMoveSerializer, PokemonSerializer, PokemonTypeSerializer, SpriteSerializer, StatSerializer, TypeSerializer
+from places.serializer import LocationSerializer, AreaSerializer, RegionSerializer
 
 
 def regions_data():

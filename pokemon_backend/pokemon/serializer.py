@@ -1,4 +1,4 @@
-from .models import Location, PokemonType, Region, Pokemon, PokemonArea, Sprite, Area, Ability, Move, Stat, Storage, Type, PokemonAbility, PokemonMove
+from .models import PokemonType, Pokemon, PokemonArea, Sprite,  Ability, Move, Stat, Storage, Type, PokemonAbility, PokemonMove
 
 from rest_framework import serializers
 
@@ -41,31 +41,10 @@ class TypeCreateListSerializer(serializers.ListSerializer):
         return Type.objects.bulk_create(types)
 
 
-class LocationCreateListSerializer(serializers.ListSerializer):
-    def create(self, validated_data):
-        locations = [Location(**item) for item in validated_data]
-
-        return Location.objects.bulk_create(locations)
-
-
-class RegionCreateListSerializer(serializers.ListSerializer):
-    def create(self, validated_data):
-
-        regions = [Region(**item) for item in validated_data]
-
-        return Region.objects.bulk_create(regions)
-
-
 class StatCreateListSerializer(serializers.ListSerializer):
     def create(self, validated_data):
         stats = [Stat(**item) for item in validated_data]
         return Stat.objects.bulk_create(stats)
-
-
-class AreaCreateListSerializer(serializers.ListSerializer):
-    def create(self, validated_data):
-        areas = [Area(**item) for item in validated_data]
-        return Area.objects.bulk_create(areas)
 
 
 class AbilityCreateListSerializer(serializers.ListSerializer):
@@ -115,28 +94,6 @@ class AbilitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Ability
         list_serializer_class = AbilityCreateListSerializer
-        fields = "__all__"
-
-
-class AreaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Area
-        list_serializer_class = AreaCreateListSerializer
-        fields = "__all__"
-
-
-class RegionSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Region
-        list_serializer_class = RegionCreateListSerializer
-        fields = ["id", "name"]
-
-
-class LocationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Location
-        list_serializer_class = LocationCreateListSerializer
         fields = "__all__"
 
 

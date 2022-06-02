@@ -1,6 +1,5 @@
 
 from pokemon.output_serializers import PokemonFromAreaOutputSerializer
-from pokemon.serializer import PokemonAreaSerializer
 from rest_framework import serializers
 
 
@@ -22,16 +21,6 @@ class MovesListingField(serializers.RelatedField):
 class StatsListingField(serializers.RelatedField):
     def to_representation(self, value):
         return {"name": value.name, "value": value.value}
-
-
-class LocationsListingField(serializers.RelatedField):
-    def to_representation(self, value):
-        return {"id": value.id, "name": value.name}
-
-
-class AreasListingField(serializers.RelatedField):
-    def to_representation(self, value):
-        return {'id': value.id, 'name': value.name, 'pokemon_count': value.pokemon_count, 'location': value.location.id}
 
 
 class PokemonAreasListingField(serializers.RelatedField):
