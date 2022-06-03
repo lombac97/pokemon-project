@@ -98,6 +98,6 @@ All the necessary parameters for each endpoint are documented in the code
 ## Postman collection
 
 A postman collection is also included in the repository to test each endpoint.
-It's important to mention that there are 2 important variables in the connection:
+It's important to mention that there are 2 important variables in the collection:
  - base_url: the Django server address
  - auth_token: once the login is made, you should replace this variable with the token value
