@@ -56,6 +56,22 @@ def validate_party_full(user_id):
         raise ParseError("You already have 6 pokemons in your party")
 
 
+def validate_party_full_and_excluding(user_id, leaving_the_party):
+    """
+    Validates if the party is already full (has 6 pokemons) and the user is excluding a pokemon
+
+    Parameters
+    ----------
+    user_id: Authenticated user from Token
+    leaving_the_party: Defines wether the user is excluding a Pokemon from the party
+
+    """
+
+    party_pokemons = get_user_party_pokemons(user_id)
+    if(len(party_pokemons) >= 6 and leaving_the_party is None):
+        raise ParseError("You already have 6 pokemons in your party")
+
+
 def edit_pokemon(data, user_id, id):
     """
     Parameters
@@ -100,7 +116,7 @@ def validate_both_swap_fields(data):
     if(data["entering_the_party"] is None and data["leaving_the_party"] is None):
         raise ValidationError("At least one field should be a number")
     if(data["entering_the_party"] == data["leaving_the_party"]):
-        raise ValidationError("You can't swap the same pokemon")
+        raise ValidationError({"You can't swap the same pokemon"})
 
 
 def swap_pokemon_party(data, user):
@@ -116,15 +132,15 @@ def swap_pokemon_party(data, user):
     """
 
     with transaction.atomic():
-        if(data["entering_the_party"]):
-            enter_pokemon_party(
-                data["entering_the_party"], user)
         if(data["leaving_the_party"]):
             leave_pokemon_party(
                 data["leaving_the_party"], user)
+        if(data["entering_the_party"]):
+            enter_pokemon_party(
+                data["entering_the_party"], user, data["leaving_the_party"])
 
 
-def enter_pokemon_party(pokemon_id, user):
+def enter_pokemon_party(pokemon_id, user, leaving_the_party):
     """
     Includes a new pokemon to the party
 
@@ -132,7 +148,7 @@ def enter_pokemon_party(pokemon_id, user):
     ----------
     user_id: Authenticated user from Token
     pokemon_id: Pokemon to include in the party
-
+    leaving_the_party: defines wether the user also excluded a pokemon
     Raises
     ------
     ValidationError
@@ -141,7 +157,7 @@ def enter_pokemon_party(pokemon_id, user):
         If the pokemon does not exist in the user storage
     """
 
-    validate_party_full(user)
+    validate_party_full_and_excluding(user, leaving_the_party)
     pokemon = Storage.objects.get(id=pokemon_id, user=user)
     if(pokemon.is_party_member):
         raise ValidationError(

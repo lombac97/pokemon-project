@@ -16,7 +16,7 @@ class Region(models.Model):
 
 class Location(models.Model):
     id = models.BigAutoField(primary_key=True)
-    regions = models.ForeignKey(
+    region = models.ForeignKey(
         Region, models.DO_NOTHING, related_name="locations")
     name = models.CharField(max_length=200)
 

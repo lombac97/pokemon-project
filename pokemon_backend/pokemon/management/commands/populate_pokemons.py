@@ -6,7 +6,7 @@ from pokemon.utils.populate import pokemons_sprites_stats_data
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         try:
-            logging.info("Populating pokemons, sprites and stats")
+            logging.info("Populating pokemons, sprites and stats...")
             pokemons_sprites_stats_data()
             logging.info("Pokemons, sprites and stats successfully populated")
         except Exception as e:

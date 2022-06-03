@@ -6,7 +6,7 @@ from pokemon.utils.populate import abilities_data
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         try:
-            logging.info("Populating abilities")
+            logging.info("Populating abilities...")
             abilities_data()
             logging.info("Abilities successfully populated")
         except Exception as e:

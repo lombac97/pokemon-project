@@ -47,7 +47,7 @@ class Sprite(models.Model):
 
 class Pokemon(models.Model):
     id = models.BigAutoField(primary_key=True)
-    sprite = models.ForeignKey("Sprite", models.DO_NOTHING)
+    sprites = models.ForeignKey("Sprite", models.DO_NOTHING)
     name = models.CharField(max_length=150)
     flavor_text = models.CharField(max_length=400)
     capture_rate = models.FloatField()

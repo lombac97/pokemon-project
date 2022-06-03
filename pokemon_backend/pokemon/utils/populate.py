@@ -29,7 +29,7 @@ def locations_data():
         region_id = Region.objects.get(name=region["name"])
 
         for location in region["locations"]:
-            dict_list.append({"name": location, "regions": region_id.id})
+            dict_list.append({"name": location, "region": region_id.id})
     location_serializer = LocationSerializer(many=True, data=dict_list)
     location_serializer.is_valid(raise_exception=True)
     location_serializer.save()
@@ -112,7 +112,7 @@ def pokemons_sprites_stats_data():
         saved_sprite = sprite_serializer.save()
 
         pokemon_serializer = PokemonSerializer(
-            data={**pokemon, "sprite": saved_sprite.id})
+            data={**pokemon, "name": pokemon["name"].lower(), "sprites": saved_sprite.id})
 
         pokemon_serializer.is_valid(raise_exception=True)
         saved_pokemon = pokemon_serializer.save()
@@ -132,8 +132,8 @@ def pokemon_areas():
     for area in data["data"]:
 
         area_db = Area.objects.get(name=area["name"])
-        pokemons_in_area = map(lambda x: x.capitalize(), area["pokemons"])
-        pokemon_db = Pokemon.objects.filter(name__in=pokemons_in_area)
+
+        pokemon_db = Pokemon.objects.filter(name__in=area["pokemons"])
         for elem in pokemon_db:
             dict_list.append({"pokemon": elem.id, "area": area_db.id})
 
@@ -151,7 +151,7 @@ def pokemon_moves_types_abilities():
     dict_list_abilities = []
     for pokemon in data["data"]:
 
-        pokemon_db = Pokemon.objects.get(name=pokemon["name"])
+        pokemon_db = Pokemon.objects.get(name=pokemon["name"].lower())
         moves = Move.objects.filter(name__in=pokemon["moves"])
         abilities = Ability.objects.filter(name__in=pokemon["abilities"])
         types = Type.objects.filter(name__in=pokemon["types"])

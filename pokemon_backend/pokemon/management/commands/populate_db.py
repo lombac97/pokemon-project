@@ -16,7 +16,7 @@ class Command(BaseCommand):
         instances = [PopulateRegions(), PopulateLocations(), PopulateAreas(), PopulateMoves(), PopulateTypes(
         ), PopulateAbilities(), PopulatePokemons(), PopulatePokemonAreas(), PopulatePokemonTypesAbilities()]
         try:
-            logging.info("Populating the database")
+            logging.info("Populating the database...")
             for elem in instances:
                 elem.handle()
             logging.info("The database has been populated successfully")

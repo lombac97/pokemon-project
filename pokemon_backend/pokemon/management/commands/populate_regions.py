@@ -6,7 +6,7 @@ from pokemon.utils.populate import regions_data
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         try:
-            logging.info("Populating regions")
+            logging.info("Populating regions...")
             regions_data()
             logging.info("Regions successfully populated")
         except Exception as e:

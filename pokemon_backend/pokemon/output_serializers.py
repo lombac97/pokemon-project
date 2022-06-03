@@ -16,8 +16,8 @@ class SpriteOutputSerializer(serializers.ModelSerializer):
 
 
 class PokemonFromAreaOutputSerializer(serializers.ModelSerializer):
-    sprite = SpriteOutputSerializer()
+    sprites = SpriteOutputSerializer()
 
     class Meta:
         model = Pokemon
-        fields = ["id", "name", "sprite"]
+        fields = ["id", "name", "sprites"]

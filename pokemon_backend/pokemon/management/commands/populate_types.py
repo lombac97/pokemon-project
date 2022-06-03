@@ -6,7 +6,7 @@ from pokemon.utils.populate import types_data
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         try:
-            logging.info("Populating types")
+            logging.info("Populating types...")
             types_data()
             logging.info("Types successfully populated")
         except Exception as e:

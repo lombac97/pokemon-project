@@ -28,7 +28,7 @@ class PokemonInfo(APIView):
         types = TypesListingField(many=True, read_only=True)
         moves = MovesListingField(many=True, read_only=True)
         stats = StatsListingField(many=True, read_only=True)
-        sprite = SpriteOutputSerializer()
+        sprites = SpriteOutputSerializer()
 
         class Meta:
             model = Pokemon
@@ -322,7 +322,7 @@ class SwapPokemonStorage(APIView):
 
             return Response(storages_serializer.data)
         except ValidationError as e:
-            raise ValidationError({"detail": e.detail[0]})
+            raise ValidationError({"detail": e.detail})
         except Storage.DoesNotExist:
             raise ParseError(
                 "Please make sure that all the pokemons you entered exist in your storage")
