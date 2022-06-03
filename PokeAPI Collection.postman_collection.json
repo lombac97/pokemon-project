@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "58393826-c591-4765-8afd-696ee0621d00",
+		"_postman_id": "5ccbaf0e-852b-4685-961c-5ce3cab4e940",
 		"name": "PokeAPI Collection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -262,7 +262,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{base_url}}/pokemons/own/",
+					"raw": "http://{{base_url}}/pokemons/own/1/",
 					"protocol": "http",
 					"host": [
 						"{{base_url}}"
@@ -270,6 +270,7 @@
 					"path": [
 						"pokemons",
 						"own",
+						"1",
 						""
 					]
 				}
