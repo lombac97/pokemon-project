@@ -11,13 +11,34 @@ from rest_framework.exceptions import NotFound
 
 
 class RegionsList(APIView):
+    """
+    Lists all regions in the database
+
+    Methods
+    -------
+    get(request, pk)
+        Lists all regions in the database
+
+    """
+
     def get(self, request):
+
         regions = Region.objects.all()
         regions_serializer = RegionSerializer(regions, many=True)
         return Response(regions_serializer.data)
 
 
 class RegionDetails(APIView):
+    """
+    Lists an specific region with its locations
+
+    Methods
+    -------
+    get(request, pk)
+        Lists an specific region with its locations
+
+    """
+
     class OutputSerializer(serializers.ModelSerializer):
         locations = LocationsListingField(many=True, read_only=True)
 
@@ -26,6 +47,16 @@ class RegionDetails(APIView):
             fields = "__all__"
 
     def get(self, request, pk):
+        """
+        Parameters
+        ----------
+        pk: Region id in the database
+
+        Raises
+        ------
+        Region.DoesNotExist
+            If the region does not exist in the database
+        """
         try:
             region = Region.objects.get(pk=pk)
             region_serializer = self.OutputSerializer(instance=region)
@@ -36,8 +67,17 @@ class RegionDetails(APIView):
 
 
 class LocationDetails(APIView):
+    """
+    Lists an specific Location with its areas
+
+    Methods
+    -------
+    get(request, pk)
+        Lists an specific Location with its areas
+
+    """
     class OutputSerializer(serializers.ModelSerializer):
-       # locations = LocationsListingField(many=True, read_only=True)
+
         areas = AreasListingField(many=True, read_only=True)
 
         class Meta:
@@ -45,6 +85,17 @@ class LocationDetails(APIView):
             fields = "__all__"
 
     def get(self, request, pk):
+        """
+        Parameters
+        ----------
+        pk: Location id in the database
+
+        Raises
+        ------
+        Location.DoesNotExist
+            If the location does not exist in the database
+        """
+
         try:
             location = Location.objects.get(pk=pk)
             location_serializer = self.OutputSerializer(instance=location)
@@ -55,9 +106,17 @@ class LocationDetails(APIView):
 
 
 class AreaDetails(APIView):
+    """
+    Lists an specific Area with its pokemons
+
+    Methods
+    -------
+    get(request, pk)
+        Lists an specific Area with its pokemons
+
+    """
+
     class OutputSerializer(serializers.ModelSerializer):
-       # locations = LocationsListingField(many=True, read_only=True)
-      #  areas = AreasListingField(many=True, read_only=True)
         pokemons = PokemonAreasListingField(many=True, read_only=True)
 
         class Meta:
@@ -65,6 +124,17 @@ class AreaDetails(APIView):
             fields = "__all__"
 
     def get(self, request, pk):
+        """
+        Parameters
+        ----------
+        pk: Area id in the database
+
+        Raises
+        ------
+        Area.DoesNotExist
+            If the area does not exist in the database
+        """
+
         try:
             area = Area.objects.get(pk=pk)
             area_serializer = self.OutputSerializer(instance=area)

@@ -14,7 +14,15 @@ from pokemon.services import catch_pokemon, delete_storage_pokemon, edit_pokemon
 
 
 class PokemonInfo(APIView):
+    """
+    Lists attributes and all info of a pokemon
 
+    Methods
+    -------
+    get(request, pk)
+        Lists all the information about a pokemon
+
+    """
     class OutputSerializer(serializers.ModelSerializer):
         abilities = AbilitiesListingField(many=True, read_only=True)
         types = TypesListingField(many=True, read_only=True)
@@ -27,6 +35,16 @@ class PokemonInfo(APIView):
             fields = "__all__"
 
     def get(self, request, pk):
+        """
+        Parameters
+        ----------
+        pk: Pokemon id in database
+
+        Raises
+        ------
+        Pokemon.DoesNotExist
+            If pokemon does not exist in the database
+        """
         try:
             pokemon = Pokemon.objects.get(pk=pk)
             pokemon_serializer = self.OutputSerializer(instance=pokemon)
@@ -36,6 +54,24 @@ class PokemonInfo(APIView):
 
 
 class OwnPokemonInfo(APIView):
+    """
+    Lists pokemon in your storage, edits nick_name and deletes pokemon from your storage
+
+    Methods
+    -------
+    get(request)
+        Lists all the pokemons in the user storage
+
+    post(request)
+        Catches a new pokemon
+
+    put(request, pk), patch(request, pk)
+        Edits a pokemon nick_name
+
+    delete(request, pk)
+        Deletes a pokemon from your storage
+    """
+
     permission_classes = [IsAuthenticated]
 
     class InputSerializer(serializers.Serializer):
@@ -54,6 +90,17 @@ class OwnPokemonInfo(APIView):
         nick_name = serializers.CharField()
 
     def get(self, request):
+        """
+        Parameters
+        ----------
+        request.user: Authenticated user from Token
+
+        Raises
+        ------
+        User.DoesNotExist
+            If the user does not exist in the database
+        """
+
         try:
             storages = Storage.objects.filter(user=request.user)
             storages_serializer = self.GetOutputSerializer(
@@ -67,6 +114,21 @@ class OwnPokemonInfo(APIView):
             raise NotFound("User not found")
 
     def post(self, request):
+        """
+        Parameters
+        ----------
+        request.user: Authenticated user from Token
+        request.data that contains:
+            - nick_name: Nick_name for the new catched pokemon
+            - specie: id of the new catched pokemon
+            - is_party_member: defines wether to include the pokemon in your party
+
+        Raises
+        ------
+        ValidationError
+            If the JSON sent is invalid
+        """
+
         try:
             input_data = self.InputSerializer(data=request.data)
             input_data.is_valid(raise_exception=True)
@@ -77,6 +139,22 @@ class OwnPokemonInfo(APIView):
             raise ParseError("Invalid data")
 
     def put(self, request, pk):
+        """
+        Parameters
+        ----------
+        request.user: Authenticated user from Token
+        request.data that contains:
+            - nick_name: new nick_name for the pokemon
+            - pk: id of the pokemon in your storage to edit
+
+        Raises
+        ------
+        ValidationError 
+            If the JSON sent is invalid
+        Storage.DoesNotExist
+            If the Pokemon does not exist in your storage
+        """
+
         try:
             input_data = self.EditInputSerializer(data=request.data)
             input_data.is_valid(raise_exception=True)
@@ -91,6 +169,22 @@ class OwnPokemonInfo(APIView):
             raise NotFound("Pokemon not found")
 
     def patch(self, request, pk):
+        """
+        Parameters
+        ----------
+        request.user: Authenticated user from Token
+        request.data that contains:
+            - nick_name: new nick_name for the pokemon
+            - pk: id of the pokemon in your storage to edit
+
+        Raises
+        ------
+        ValidationError 
+            If the JSON sent is invalid
+        Storage.DoesNotExist
+            If the Pokemon does not exist in your storage
+        """
+
         try:
             input_data = self.EditInputSerializer(data=request.data)
             input_data.is_valid(raise_exception=True)
@@ -105,6 +199,20 @@ class OwnPokemonInfo(APIView):
             raise NotFound("Pokemon not found")
 
     def delete(self, request, pk):
+        """
+        Parameters
+        ----------
+        request.user: Authenticated user from Token
+        request.data that contains:
+            - pk: id of the pokemon in your storage to delete
+
+        Raises
+        ------
+        ValidationError 
+            If the JSON sent is invalid
+        Storage.DoesNotExist
+            If the Pokemon does not exist in your storage
+        """
         try:
             delete_storage_pokemon(pk, request.user.id)
             return Response(None, HTTPStatus.NO_CONTENT)
@@ -115,6 +223,16 @@ class OwnPokemonInfo(APIView):
 
 
 class OwnPokemonPartyInfo(APIView):
+    """
+    Lists all the pokemons in your party
+
+    Methods
+    -------
+    get(request, pk)
+        Lists all the pokemons in your party
+
+    """
+
     permission_classes = [IsAuthenticated]
 
     class GetOutputSerializer(serializers.ModelSerializer):
@@ -125,6 +243,18 @@ class OwnPokemonPartyInfo(APIView):
             fields = ["id", "nick_name", "is_party_member", "specie"]
 
     def get(self, request):
+        """
+        Parameters
+        ----------
+        request.user: Authenticated user from Token
+
+        Raises
+        ------
+
+        User.DoesNotExist
+            If the user does not exist in the database
+        """
+
         try:
             pokemons_in_party = get_user_party_pokemons(request.user)
             storages_serializer = self.GetOutputSerializer(
@@ -139,6 +269,16 @@ class OwnPokemonPartyInfo(APIView):
 
 
 class SwapPokemonStorage(APIView):
+    """
+    Includes or exclude (or both) pokemons from your party
+
+    Methods
+    -------
+    post(request, pk)
+        Swaps pokemon in your party
+
+    """
+
     permission_classes = [IsAuthenticated]
 
     class InputSerializer(serializers.Serializer):
@@ -153,6 +293,23 @@ class SwapPokemonStorage(APIView):
             fields = ["id", "nick_name", "is_party_member", "specie"]
 
     def post(self, request):
+        """
+        Parameters
+        ----------
+        request.user: Authenticated user from Token
+        request.data that contains:
+            - entering_the_party: storage id of the pokemon entering the party
+            - leaving_the_party: storage id of the pokemon leaving the party
+
+        Raises
+        ------
+
+        ValidationError 
+            If the JSON sent is invalid or the operation is invalid
+        Storage.DoesNotExist
+            If the Pokemon does not exist in your storage
+        """
+
         try:
             input_data = self.InputSerializer(data=request.data)
             input_data.is_valid(raise_exception=True)
