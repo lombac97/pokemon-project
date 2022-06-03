@@ -94,7 +94,7 @@ DATABASES = {
         'NAME': 'pikachu',
         'USER': 'postgres',
         'PASSWORD': '9485326',
-        'HOST': 'localhost',
+        'HOST': '127.0.0.1',
         'PORT': 5433,
     }
 }
