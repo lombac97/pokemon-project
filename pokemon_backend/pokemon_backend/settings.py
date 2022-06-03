@@ -27,7 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-
+# Only for the test
+CORS_ORIGIN_ALLOW_ALL = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -64,8 +65,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# Only for the test 
-CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'pokemon_backend.urls'
 
