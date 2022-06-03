@@ -90,7 +90,7 @@ Endpoint | Method | CRUD Method | Auth Required? | Result
 `pokemons/own/party/` | GET | READ | Yes | List all the pokemons in your party
 `pokemons/own/swap/` | POST | UPDATE | Yes | Include or exclude (or both) Pokemons from your party
 
-> Note: For auth required endpoints an Authorization header must be sent, with value Token <<token>>
+> Note: For auth required endpoints an Authorization header must be sent, with value Token <token>
 > For non auth required endpoints, that header should not be sent
 
 All the necessary parameters for each endpoint are documented in the code
