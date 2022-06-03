@@ -50,13 +50,13 @@ To run this project you will need to create a database, the run the migrations a
 
 1) Create a database and connect your project to it
 
-    There's a configuration in settings.py with some important parameters you'll need to configure:
+    There's a configuration in settings.py with some important parameters you'll need to set:
     
-    'NAME': 'pikachu' -> The name of the database you just created
-    'USER': 'postgres' -> The user to authenticate to the server
-    'PASSWORD': '9485326' -> The password to authenticate to the server
-    'HOST': '127.0.0.1' -> The server IP, if running locally should remain the same
-    'PORT': 5433 -> The port in which your server is listening for connections
+     - 'NAME': 'pikachu' -> The name of the database you just created
+     - 'USER': 'postgres' -> The user to authenticate to the server
+     - 'PASSWORD': '9485326' -> The password to authenticate to the server
+     - 'HOST': '127.0.0.1' -> The server IP, if running locally should remain the same
+     - 'PORT': 5433 -> The port in which your server is listening for connections
  
  2) Once your database is created and the configurations in settings.py are set, you'll need to run the migrations
     ```sh
