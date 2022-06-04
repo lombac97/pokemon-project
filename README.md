@@ -29,7 +29,6 @@ And press enter
     - Django==4.0.4
     - django-cors-headers==3.12.0
     - django-debug-toolbar==3.4.0
-    - django-rest-framework==0.1.0
     - djangorestframework==3.13.1
     - psycopg2==2.9.3
     - pycodestyle==2.8.0
