@@ -154,19 +154,7 @@ class OwnPokemonInfo(APIView):
         Storage.DoesNotExist
             If the Pokemon does not exist in your storage
         """
-
-        try:
-            input_data = self.EditInputSerializer(data=request.data)
-            input_data.is_valid(raise_exception=True)
-            save_data = edit_pokemon(input_data.data, request.user.id, pk)
-            storage_serializer = StorageSerializer(instance=save_data)
-            data = storage_serializer.data
-            data.pop("user")
-            return Response(data)
-        except ValidationError:
-            raise ParseError("Invalid data")
-        except Storage.DoesNotExist:
-            raise NotFound("Pokemon not found")
+        return self.edit_nick_name(request, pk)
 
     def patch(self, request, pk):
         """
@@ -184,7 +172,24 @@ class OwnPokemonInfo(APIView):
         Storage.DoesNotExist
             If the Pokemon does not exist in your storage
         """
+        return self.edit_nick_name(request, pk)
 
+    def edit_nick_name(self, request, pk):
+        """
+        Parameters
+        ----------
+        request.user: Authenticated user from Token
+        request.data that contains:
+            - nick_name: new nick_name for the pokemon
+            - pk: id of the pokemon in your storage to edit
+
+        Raises
+        ------
+        ValidationError 
+            If the JSON sent is invalid
+        Storage.DoesNotExist
+            If the Pokemon does not exist in your storage
+        """
         try:
             input_data = self.EditInputSerializer(data=request.data)
             input_data.is_valid(raise_exception=True)
